@@ -55,7 +55,7 @@ class Block{
                 return;
             }
             fallenBlocks.forEach(block => {
-                if((this.y + this.height + MOVEMENT_SPEED > block.y && this.x > block.x - block.width && this.x < block.x + block.width) || (this.y + this.height + MOVEMENT_SPEED > block.y && this.x == block.x)){
+                if((this.y + this.height + MOVEMENT_SPEED > block.y && this.x + this.width > block.x && this.x < block.x + block.width) || (this.y + this.height + MOVEMENT_SPEED > block.y && this.x == block.x)){
                     fallenBlocks.push(this);
                     clearInterval(intervalID);
                     document.removeEventListener('keydown', func);
@@ -69,12 +69,10 @@ class Block{
 }
 
 function createNewBlock(){
-    const heightValues = [100, 150, 200];
-    const widthValues = [100, 200, 250, 300, 350, 400];
+    const heightAndWidthValues = [[100, 100], [200, 100], [200, 200], [200, 300], [300, 100], [100, 200], [100, 300], [100, 400]];
     const spawnPoints = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700];
-    const colorValues = ['red', 'blue', 'green', 'purple', 'yellow', 'teal', 'lime', 'turquoise', 'pink', 'magenta', 'orange', 'aquamarine', 'crimson'];
-    const height = heightValues[Math.floor(Math.random() * heightValues.length)];
-    const width = widthValues[Math.floor(Math.random() * widthValues.length)];
+    const colorValues = ['red', 'blue', 'green', 'purple', 'yellow', 'teal', 'lime', 'turquoise', 'pink', 'magenta', 'orange', 'aquamarine', 'crimson', 'chocolate', 'gold', 'lavander', 'maroon', 'MediumPurple', 'MidnightBlue'];
+    const heightAndWidth = heightAndWidthValues[Math.floor(Math.random() * heightAndWidthValues.length)];
     const color = colorValues[Math.floor(Math.random() * colorValues.length)];
     const x = spawnPoints[Math.floor(Math.random() * spawnPoints.length)];
 
@@ -91,7 +89,7 @@ function createNewBlock(){
         document.body.appendChild(gameOverMessage);
         return;
     }else{
-        const newBlock = new Block(height, width, color, x, 0);
+        const newBlock = new Block(heightAndWidth[0], heightAndWidth[1], color, x, 0);
         newBlock.move();
     }
 }
@@ -100,7 +98,7 @@ function createNewBlock(){
 function checkIfPlayerLost(){
     let gameOver = false;
     fallenBlocks.forEach(block => {
-        if(block.y - block.height <= 0){
+        if(block.y - (block.height / 2) <= 0){
             console.log('you lost');
             gameOver = true;
         }
